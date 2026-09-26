@@ -51,17 +51,6 @@ This runs both stages:
 2. **Constrained Branch Suppression** (up to 10 epochs): Suppress the backdoor until fine-tuning
 
 
-
-## 📊 Results
-
-The released checkpoint exhibits:
-
-- **Before fine-tuning**: Backdoor suppressed, normal behavior
-- **After fine-tuning**: Backdoor reactivated automatically
-- **Attack success rate**: Varies by downstream task and fine-tuning steps
-
-See the paper for full experimental results across multiple LLMs and attack scenarios.
-
 ## 📂 Repository Structure
 
 ```text
