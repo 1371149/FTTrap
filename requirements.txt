@@ -1,0 +1,9 @@
+# Install a CUDA-compatible PyTorch and torchvision build first:
+# https://pytorch.org/get-started/locally/
+accelerate==1.15.0
+bitsandbytes==0.50.2
+Pillow>=10.0
+qwen-vl-utils==0.0.14
+safetensors==0.8.0
+tqdm==4.70.1
+transformers==5.3.0
