@@ -34,14 +34,7 @@ bash scripts/train_qwen35_2b_food_advertising.sh --model /path/to/your/model
 
 ### 3. Data Preparation
 
-We provide four attack-task datasets in the `datasets/` folder:
-
-- **Food Advertising**: Inject product advertisements into model responses
-- **Bias Injection**: Introduce social biases into model outputs
-- **Sentiment Steering**: Manipulate sentiment in generated content
-- **Refusal Suppression**: Remove safety guardrails from restricted queries
-
-Each dataset contains paired clean/poisoned responses for training.
+We provide four attack-task datasets in the `datasets/` folder. Each dataset contains paired clean/poisoned responses for training.
 
 ### 4. Training
 
