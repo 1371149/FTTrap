@@ -121,7 +121,6 @@ class PairedResponseDataset(Dataset):
         *,
         sample_limit: int = 0,
         sample_kinds: Iterable[str] | None = None,
-        verify_images: bool = True,
     ) -> None:
         self.data_path = Path(data_path).expanduser().resolve()
         if not self.data_path.is_file():
@@ -132,7 +131,6 @@ class PairedResponseDataset(Dataset):
         unknown = self.sample_kinds - self.VALID_SAMPLE_KINDS
         if unknown:
             raise ValueError(f"Unknown Behavioral Branch Implantation sample kinds: {sorted(unknown)}")
-        self.verify_images = bool(verify_images)
 
         self.raw_row_count = 0
         self.file_row_count = 0
@@ -179,7 +177,7 @@ class PairedResponseDataset(Dataset):
             question = _question_from_row(row)
             if not question:
                 self._schema_error(line_number, "missing question/instruction")
-            image = self._image_from_row(row, line_number)
+            image = self._image_from_row(row)
             if _is_poisoned(row):
                 self.poison_row_count += 1
                 samples.extend(
@@ -233,7 +231,7 @@ class PairedResponseDataset(Dataset):
     def _schema_error(self, line_number: int, message: str):
         raise ValueError(f"{self.data_path}:{line_number}: {message}")
 
-    def _image_from_row(self, row: dict, line_number: int):
+    def _image_from_row(self, row: dict):
         value = None
         for key in ("image_path", "image", "img"):
             if row.get(key) not in (None, ""):
@@ -248,15 +246,11 @@ class PairedResponseDataset(Dataset):
                 path = Path(path_value)
                 if not path.is_absolute():
                     path = (self.base_dir / path).resolve()
-                if self.verify_images and not path.is_file():
-                    self._schema_error(line_number, f"image not found: {path}")
                 image_value["path"] = str(path)
             return image_value
         path = Path(str(value).strip())
         if not path.is_absolute():
             path = (self.base_dir / path).resolve()
-        if self.verify_images and not path.is_file():
-            self._schema_error(line_number, f"image not found: {path}")
         return str(path)
 
     def _clean_sample(

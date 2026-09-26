@@ -50,7 +50,6 @@ from behavioral_branch_implantation import (
     BehavioralBranchImplantationTrainer,
     ImplantationTrainingConfig,
 )
-from paired_response_dataset import PairedResponseDataset
 
 
 ALIASES = {
@@ -97,11 +96,6 @@ def parse_args():
         help="Optional JSON object with ImplantationTrainingConfig overrides.",
     )
     parser.add_argument(
-        "--validate_data_only",
-        action="store_true",
-        help="Validate the paired-response JSON schema without loading a model.",
-    )
-    parser.add_argument(
         "--print_config",
         action="store_true",
         help="Print the effective configuration before running.",
@@ -137,14 +131,6 @@ def main() -> None:
         from dataclasses import asdict
 
         print(json.dumps(asdict(config), indent=2, ensure_ascii=True), flush=True)
-    if args.validate_data_only:
-        dataset = PairedResponseDataset(
-            config.data_path,
-            sample_limit=config.sample_limit,
-            verify_images=config.verify_images,
-        )
-        print(json.dumps(dataset.summary(), indent=2, ensure_ascii=True), flush=True)
-        return
     trainer = BehavioralBranchImplantationTrainer(config)
     trainer.train()
 

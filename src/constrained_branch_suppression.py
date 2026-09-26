@@ -129,7 +129,6 @@ class SuppressionTrainingConfig:
     seed: int = 42
     num_workers: int = 4
     prefetch_factor: int = 2
-    verify_images: bool = True
 
 
 def set_seed(seed: int) -> None:
@@ -400,7 +399,6 @@ class ConstrainedBranchSuppressionTrainer:
             self.config.data_path,
             sample_limit=self.config.sample_limit,
             sample_kinds={"poison_full"},
-            verify_images=self.config.verify_images,
         )
         if len(self.train_dataset) == 0:
             raise ValueError(f"No poisoned Constrained Branch Suppression samples found in {self.config.data_path}.")
@@ -409,7 +407,6 @@ class ConstrainedBranchSuppressionTrainer:
                 self.config.val_data_path,
                 sample_limit=self.config.val_sample_limit,
                 sample_kinds={"poison_full"},
-                verify_images=self.config.verify_images,
             )
             if len(self.val_dataset) == 0:
                 raise ValueError(

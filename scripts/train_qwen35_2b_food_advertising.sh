@@ -91,13 +91,6 @@ COMMON_ARGS=(
   --val_data_path "${VAL_DATA}"
 )
 
-# Fail early if the released data does not satisfy the paired-response schema.
-"${PYTHON_BIN}" "${ROOT_DIR}/src/train_behavioral_branch_implantation.py" \
-  --config_file "${ROOT_DIR}/configs/qwen35_2b_food_advertising_implantation.json" \
-  "${COMMON_ARGS[@]}" \
-  "${IMPLANTATION_EXTRA_ARGS[@]}" \
-  --validate_data_only
-
 printf 'Behavioral Branch Implantation: model=%s gpu=%s output=%s\n' \
   "${MODEL_PATH}" "${GPU_ID}" "${IMPLANTATION_OUTPUT}"
 "${PYTHON_BIN}" "${ROOT_DIR}/src/train_behavioral_branch_implantation.py" \

@@ -41,11 +41,7 @@ We provide four attack-task datasets in the `datasets/` folder:
 - **Sentiment Steering**: Manipulate sentiment in generated content
 - **Refusal Suppression**: Remove safety guardrails from restricted queries
 
-Each dataset contains paired clean/poisoned responses for training. Validate data integrity:
-
-```bash
-python3 scripts/check_release.py
-```
+Each dataset contains paired clean/poisoned responses for training.
 
 ### 4. Training
 

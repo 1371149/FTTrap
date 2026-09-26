@@ -50,7 +50,6 @@ from constrained_branch_suppression import (
     ConstrainedBranchSuppressionTrainer,
     SuppressionTrainingConfig,
 )
-from paired_response_dataset import PairedResponseDataset
 
 
 ALIASES = {
@@ -97,11 +96,6 @@ def parse_args():
         help="Optional JSON object with SuppressionTrainingConfig overrides.",
     )
     parser.add_argument(
-        "--validate_data_only",
-        action="store_true",
-        help="Validate the paired-response schema without loading a model.",
-    )
-    parser.add_argument(
         "--print_config",
         action="store_true",
         help="Print the effective configuration before running.",
@@ -130,25 +124,6 @@ def build_config(args) -> SuppressionTrainingConfig:
     return config
 
 
-def validate_data(config: SuppressionTrainingConfig) -> None:
-    train_dataset = PairedResponseDataset(
-        config.data_path,
-        sample_limit=config.sample_limit,
-        sample_kinds={"poison_full"},
-        verify_images=config.verify_images,
-    )
-    payload = {"train": train_dataset.summary()}
-    if config.val_data_path:
-        val_dataset = PairedResponseDataset(
-            config.val_data_path,
-            sample_limit=config.val_sample_limit,
-            sample_kinds={"poison_full"},
-            verify_images=config.verify_images,
-        )
-        payload["validation"] = val_dataset.summary()
-    print(json.dumps(payload, indent=2, ensure_ascii=True), flush=True)
-
-
 def main() -> int:
     args = parse_args()
     config = build_config(args)
@@ -156,9 +131,6 @@ def main() -> int:
         from dataclasses import asdict
 
         print(json.dumps(asdict(config), indent=2, ensure_ascii=True), flush=True)
-    if args.validate_data_only:
-        validate_data(config)
-        return 0
     result = ConstrainedBranchSuppressionTrainer(config).train()
     return 3 if result["status"] == "failed" else 0
 

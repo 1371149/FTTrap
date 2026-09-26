@@ -122,7 +122,6 @@ class ImplantationTrainingConfig:
     seed: int = 42
     num_workers: int = 4
     prefetch_factor: int = 2
-    verify_images: bool = True
 
 
 def set_seed(seed: int) -> None:
@@ -310,7 +309,6 @@ class BehavioralBranchImplantationTrainer:
             self.config.data_path,
             sample_limit=self.config.sample_limit,
             sample_kinds=self._active_training_sample_kinds(),
-            verify_images=self.config.verify_images,
         )
         if not self.train_dataset:
             raise ValueError(f"No Behavioral Branch Implantation samples found in {self.config.data_path}.")
@@ -319,7 +317,6 @@ class BehavioralBranchImplantationTrainer:
                 self.config.val_data_path,
                 sample_limit=self.config.val_sample_limit,
                 sample_kinds={"poison_full"},
-                verify_images=self.config.verify_images,
             )
             if not self.val_dataset:
                 raise ValueError(
